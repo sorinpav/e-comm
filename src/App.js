@@ -6,6 +6,7 @@ import SignInRegisterPage from './pages/signInRegister/SignInRegisterPage';
 import { Switch, Route } from 'react-router-dom';
 import Header from './components/header/Header';
 import { auth } from './firebase/firebase.utils';
+import { createUserProfileDocument } from './firebase/Auth';
 class App extends Component {
   constructor() {
     super();
@@ -15,7 +16,15 @@ class App extends Component {
   }
   unsubscribe = null;
   componentDidMount() {
-    this.unsubscribe = auth.onAuthStateChanged(user => {
+    this.unsubscribe = auth.onAuthStateChanged(async user => {
+      if (user) {
+        const userRef = await createUserProfileDocument(user);
+        userRef.onSnapshot(snapshot => {
+          this.setState({
+            currentUser: { id: snapshot.id, ...snapshot.data() }
+          });
+        });
+      }
       this.setState({ currentUser: user });
     });
   }
