@@ -1,12 +1,12 @@
 import React from 'react';
 import './SignInRegisterPage.scss';
 import { SignIn } from '../../components/SignIn/SignIn';
-import { Register } from '../../components/Register/Register';
+import { SignUp } from '../../components/SignUp/SignUp';
 function SignInRegisterPage() {
   return (
     <div className='sign-in-register'>
       <SignIn />
-      <Register />
+      <SignUp />
     </div>
   );
 }
