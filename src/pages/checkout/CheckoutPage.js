@@ -1,6 +1,7 @@
 import React from 'react';
 import './CheckoutPage.scss';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
   selectCartItems,
@@ -23,13 +24,13 @@ const CheckoutPage = ({ items, totalValue }) => (
     ) : (
       <p>
         You have no items in your cart. Go to{' '}
-        <a className='underlined' href='/shop'>
+        <Link className='underlined' to='/shop'>
           shop
-        </a>
+        </Link>
         .
       </p>
     )}
-    {items.length ? <div className='total'>Total: {totalValue}</div> : ''}
+    {items.length ? <div className='total'>Total: £{totalValue}</div> : ''}
   </div>
 );
 const mapStateToProps = createStructuredSelector({
