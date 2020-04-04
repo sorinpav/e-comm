@@ -1,17 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PreviewCollection from '../../components/preview-collection/PreviewCollection';
-import { createStructuredSelector } from 'reselect';
-import { selectShopCollections } from '../../redux/selectors/shopSelectors';
-const ShopPage = ({ collections }) => (
-  <div className='shop-page'>
-    {collections.map(({ id, ...otherCollectionProps }) => {
-      return <PreviewCollection key={id} {...otherCollectionProps} />;
-    })}
-  </div>
-);
+import './ShopPage.scss';
+import CollectionsOverview from '../../components/CollectionsOverview/CollectionsOverview';
+import { Route } from 'react-router-dom';
+import CollectionPage from '../collection/CollectionPage';
 
-const mapStateToProps = createStructuredSelector({
-  collections: selectShopCollections
-});
-export default connect(mapStateToProps)(ShopPage);
+/* I have access to match because the shopPage 
+itself is nested inside a Route inside App.js, 
+and Route passes match, location and history as props
+*/
+const ShopPage = ({ match }) => {
+  return (
+    <div className='shop-page'>
+      <Route exact path={`${match.path}`} component={CollectionsOverview} />
+      <Route path={`${match.path}/:collectionId`} component={CollectionPage} />
+    </div>
+  );
+};
+
+export default ShopPage;
