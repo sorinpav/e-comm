@@ -5,23 +5,30 @@ import { Link } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import {
   selectCartItems,
-  selectTotalValue
+  selectTotalValue,
 } from '../../redux/selectors/cartSelectors';
 import CheckoutHeaderBlock from '../../components/CheckoutHeaderBlock/CheckoutHeaderBlock';
 import CheckoutItem from '../../components/CheckoutItem/CheckoutItem';
 import StripeButton from '../../components/StripeButton/StripeButton';
 
+//styles
+import {
+  CheckoutPageContainer,
+  CheckoutHeader,
+  Total,
+} from './CheckoutPage.styles';
+
 const CheckoutPage = ({ items, totalValue }) => (
-  <div className='checkout-page'>
-    <div className='checkout-header'>
+  <CheckoutPageContainer>
+    <CheckoutHeader>
       <CheckoutHeaderBlock blockTitle='Product' />
       <CheckoutHeaderBlock blockTitle='Description' />
       <CheckoutHeaderBlock blockTitle='Quantity' />
       <CheckoutHeaderBlock blockTitle='Price' />
       <CheckoutHeaderBlock blockTitle='Remove' />
-    </div>
+    </CheckoutHeader>
     {items.length ? (
-      items.map(item => <CheckoutItem key={item.id} cartItem={item} />)
+      items.map((item) => <CheckoutItem key={item.id} cartItem={item} />)
     ) : (
       <p>
         You have no items in your cart. Go to{' '}
@@ -31,12 +38,12 @@ const CheckoutPage = ({ items, totalValue }) => (
         .
       </p>
     )}
-    {items.length ? <div className='total'>Total: £{totalValue}</div> : ''}
+    {items.length ? <Total>Total: £{totalValue}</Total> : ''}
     <StripeButton price={totalValue} />
-  </div>
+  </CheckoutPageContainer>
 );
 const mapStateToProps = createStructuredSelector({
   items: selectCartItems,
-  totalValue: selectTotalValue
+  totalValue: selectTotalValue,
 });
 export default connect(mapStateToProps)(CheckoutPage);
