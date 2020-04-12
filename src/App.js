@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+//styles
 import './App.css';
+
+//pages
 import Homepage from './pages/homepage/Homepage';
 import ShopPage from './pages/shop/ShopPage';
 import SignInRegisterPage from './pages/signInRegister/SignInRegisterPage';
 import CheckoutPage from './pages/checkout/CheckoutPage';
 import ContactPage from './pages/contact/ContactPage';
+
+//routing
 import { Switch, Route, Redirect } from 'react-router-dom';
+
+//components
 import Header from './components/header/Header';
+
+//utils
 import { auth } from './firebase/firebase.utils';
 import { createUserProfileDocument } from './firebase/Auth';
 import { setCurrentUser } from './redux/actions/userActions';
 import { selectCurrentUser } from './redux/selectors/userSelectors';
 import { createStructuredSelector } from 'reselect';
+
 class App extends Component {
   unsubscribe = null;
   componentDidMount() {

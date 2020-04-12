@@ -4,6 +4,8 @@ import CustomButton from '../CustomButton/CustomButton';
 import { createUserProfileDocument } from '../../firebase/Auth';
 import { auth } from '../../firebase/firebase.utils';
 
+import { SignUpContainer, Title, ButtonsContainer } from './SignUp.styles';
+
 export class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -11,10 +13,10 @@ export class SignUp extends Component {
       displayName: '',
       email: '',
       password: '',
-      repeatPassword: ''
+      repeatPassword: '',
     };
   }
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const { displayName, email, password, repeatPassword } = this.state;
     if (password !== repeatPassword) {
@@ -31,20 +33,20 @@ export class SignUp extends Component {
         displayName: '',
         email: '',
         password: '',
-        repeatPassword: ''
+        repeatPassword: '',
       });
     } catch (error) {
       console.log(error.message);
     }
   };
-  handleChange = e => {
+  handleChange = (e) => {
     const { value, name } = e.target;
     this.setState({ [name]: value });
   };
   render() {
     return (
-      <div className='sign-in'>
-        <h2> I don't have an account</h2>
+      <SignUpContainer>
+        <Title> I don't have an account</Title>
         <span>Sign up with your email and password.</span>
         <form onSubmit={this.handleSubmit}>
           <FormInput
@@ -79,11 +81,11 @@ export class SignUp extends Component {
             value={this.state.repeatPassword}
             required
           />
-          <div className='buttons'>
+          <ButtonsContainer>
             <CustomButton type='submit'>Sign up</CustomButton>
-          </div>
+          </ButtonsContainer>
         </form>
-      </div>
+      </SignUpContainer>
     );
   }
 }
