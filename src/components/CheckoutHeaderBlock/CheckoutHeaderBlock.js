@@ -1,10 +1,10 @@
 import React from 'react';
-import './CheckoutHeaderBlock.scss';
 
+import { HeaderBlock } from './CheckoutHeaderBlock.styles';
 const CheckoutHeaderBlock = ({ blockTitle }) => (
-  <div className='header-block'>
+  <HeaderBlock>
     <span>{blockTitle}</span>
-  </div>
+  </HeaderBlock>
 );
 
 export default CheckoutHeaderBlock;
