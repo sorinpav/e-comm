@@ -19,10 +19,12 @@ import Header from './components/header/Header';
 
 //utils
 import { auth } from './firebase/firebase.utils';
-import { createUserProfileDocument } from './firebase/Auth';
+import { createUserProfileDocument } from './firebase/Utils';
 import { setCurrentUser } from './redux/actions/userActions';
 import { selectCurrentUser } from './redux/selectors/userSelectors';
 import { createStructuredSelector } from 'reselect';
+import { selectShopCollectionsForPreview } from './redux/selectors/shopSelectors';
+// import { addItems } from './firebase/Utils';
 
 class App extends Component {
   unsubscribe = null;
@@ -39,6 +41,7 @@ class App extends Component {
         });
       }
       setCurrentUser(user);
+      // addItems('collections', collections);
     });
   }
 
@@ -72,6 +75,7 @@ class App extends Component {
 }
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  collections: selectShopCollectionsForPreview,
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
