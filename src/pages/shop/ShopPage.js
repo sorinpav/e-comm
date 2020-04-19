@@ -8,11 +8,18 @@ import { db } from '../../firebase/firebase.utils';
 import { convertCollectionsSnapshotToMap } from '../../firebase/Utils';
 import { updateCollections } from '../../redux/actions/shopActions';
 
+import WithSpinner from '../../components/withSpinner/withSpinner';
+
 /* I have access to match because the shopPage 
 itself is nested inside a Route inside App.js, 
 and Route passes match, location and history as props
 */
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 class ShopPage extends React.Component {
+  state = { loading: true };
+
   unsubscribeFromSnapshot = null;
 
   componentDidMount() {
@@ -23,6 +30,7 @@ class ShopPage extends React.Component {
       async (snapshot) => {
         const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
         updateCollections(collectionsMap);
+        this.setState({ loading: false });
       }
     );
   }
@@ -32,10 +40,24 @@ class ShopPage extends React.Component {
 
     return (
       <div className='shop-page'>
-        <Route exact path={`${match.path}`} component={CollectionsOverview} />
+        <Route
+          exact
+          path={`${match.path}`}
+          render={(props) => (
+            <CollectionsOverviewWithSpinner
+              isLoading={this.state.loading}
+              {...props}
+            />
+          )}
+        />
         <Route
           path={`${match.path}/:collectionId`}
-          component={CollectionPage}
+          render={(props) => (
+            <CollectionPageWithSpinner
+              isLoading={this.state.loading}
+              {...props}
+            />
+          )}
         />
       </div>
     );
