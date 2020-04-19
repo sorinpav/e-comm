@@ -1,14 +1,13 @@
 import {
-  UPDATE_COLLECTIONS,
   FETCH_COLLECTIONS_START,
   FETCH_COLLECTIONS_SUCCESS,
-  FETCH_COLLECTIONS_FAIL,
+  FETCH_COLLECTIONS_FAILURE,
 } from '../types/shopTypes';
 
 const INITIAL_STATE = {
   collections: null,
   isFetching: false,
-  errorMessage: '',
+  errorMessage: undefined,
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -16,11 +15,9 @@ const shopReducer = (state = INITIAL_STATE, action) => {
     case FETCH_COLLECTIONS_START:
       return { ...state, isFetching: true };
     case FETCH_COLLECTIONS_SUCCESS:
-      return { ...state, collections: action.payload, isFetching: false };
-    case FETCH_COLLECTIONS_FAIL:
-      return { ...state, errorMessage: action.payload, isFetching: false };
-    case UPDATE_COLLECTIONS:
-      return { ...state, collections: action.payload };
+      return { ...state, isFetching: false, collections: action.payload };
+    case FETCH_COLLECTIONS_FAILURE:
+      return { ...state, isFetching: false, errorMessage: action.payload };
     default:
       return state;
   }

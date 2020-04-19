@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 
 import { createStructuredSelector } from 'reselect';
 import { fetchCollectionsStartAsync } from '../../redux/actions/shopActions';
-import { selectIsCollectionFetching } from '../../redux/selectors/shopSelectors';
+import {
+  selectIsCollectionFetching,
+  selectIsCollectionLoaded,
+} from '../../redux/selectors/shopSelectors';
 import WithSpinner from '../../components/withSpinner/withSpinner';
 
 /* I have access to match because the shopPage 
@@ -19,11 +22,12 @@ const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 class ShopPage extends React.Component {
   componentDidMount() {
     const { fetchCollectionsStartAsync } = this.props;
+
     fetchCollectionsStartAsync();
   }
 
   render() {
-    const { match, isCollectionFetching } = this.props;
+    const { match, isCollectionFetching, isCollectionLoaded } = this.props;
     return (
       <div className='shop-page'>
         <Route
@@ -40,7 +44,7 @@ class ShopPage extends React.Component {
           path={`${match.path}/:collectionId`}
           render={(props) => (
             <CollectionPageWithSpinner
-              isLoading={isCollectionFetching}
+              isLoading={!isCollectionLoaded}
               {...props}
             />
           )}
@@ -52,6 +56,7 @@ class ShopPage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   isCollectionFetching: selectIsCollectionFetching,
+  isCollectionLoaded: selectIsCollectionLoaded,
 });
 const mapDispatchToProps = (dispatch) => ({
   fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
