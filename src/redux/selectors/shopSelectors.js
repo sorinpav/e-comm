@@ -23,3 +23,9 @@ export const selectIsCollectionFetching = createSelector(
   [selectShop],
   (shop) => shop.isFetching
 );
+
+export const selectIsCollectionLoaded = createSelector(
+  [selectShop],
+  (shop) => !!shop.collections //get truthy or falsy value from shop.collections object
+  //null gives false, object gives true, regardless of it being empty or full
+);
