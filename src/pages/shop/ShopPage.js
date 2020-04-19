@@ -4,10 +4,9 @@ import { Route } from 'react-router-dom';
 import CollectionPage from '../collection/CollectionPage';
 import { connect } from 'react-redux';
 
-import { db } from '../../firebase/firebase.utils';
-import { convertCollectionsSnapshotToMap } from '../../firebase/Utils';
-import { updateCollections } from '../../redux/actions/shopActions';
-
+import { createStructuredSelector } from 'reselect';
+import { fetchCollectionsStartAsync } from '../../redux/actions/shopActions';
+import { selectIsCollectionFetching } from '../../redux/selectors/shopSelectors';
 import WithSpinner from '../../components/withSpinner/withSpinner';
 
 /* I have access to match because the shopPage 
@@ -18,26 +17,13 @@ and Route passes match, location and history as props
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 class ShopPage extends React.Component {
-  state = { loading: true };
-
-  unsubscribeFromSnapshot = null;
-
   componentDidMount() {
-    const { updateCollections } = this.props;
-    const collectionRef = db.collection('collections');
-
-    this.unsubscribeFromSnapshot = collectionRef.onSnapshot(
-      async (snapshot) => {
-        const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-        updateCollections(collectionsMap);
-        this.setState({ loading: false });
-      }
-    );
+    const { fetchCollectionsStartAsync } = this.props;
+    fetchCollectionsStartAsync();
   }
 
   render() {
-    const { match } = this.props;
-
+    const { match, isCollectionFetching } = this.props;
     return (
       <div className='shop-page'>
         <Route
@@ -45,7 +31,7 @@ class ShopPage extends React.Component {
           path={`${match.path}`}
           render={(props) => (
             <CollectionsOverviewWithSpinner
-              isLoading={this.state.loading}
+              isLoading={isCollectionFetching}
               {...props}
             />
           )}
@@ -54,7 +40,7 @@ class ShopPage extends React.Component {
           path={`${match.path}/:collectionId`}
           render={(props) => (
             <CollectionPageWithSpinner
-              isLoading={this.state.loading}
+              isLoading={isCollectionFetching}
               {...props}
             />
           )}
@@ -63,8 +49,11 @@ class ShopPage extends React.Component {
     );
   }
 }
-const mapDispatchToProps = (dispatch) => ({
-  updateCollections: (collectionsMap) =>
-    dispatch(updateCollections(collectionsMap)),
+
+const mapStateToProps = createStructuredSelector({
+  isCollectionFetching: selectIsCollectionFetching,
 });
-export default connect(null, mapDispatchToProps)(ShopPage);
+const mapDispatchToProps = (dispatch) => ({
+  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);

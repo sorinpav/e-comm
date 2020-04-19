@@ -1,11 +1,24 @@
-import { UPDATE_COLLECTIONS } from '../types/shopTypes';
+import {
+  UPDATE_COLLECTIONS,
+  FETCH_COLLECTIONS_START,
+  FETCH_COLLECTIONS_SUCCESS,
+  FETCH_COLLECTIONS_FAIL,
+} from '../types/shopTypes';
 
 const INITIAL_STATE = {
   collections: null,
+  isFetching: false,
+  errorMessage: '',
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case FETCH_COLLECTIONS_START:
+      return { ...state, isFetching: true };
+    case FETCH_COLLECTIONS_SUCCESS:
+      return { ...state, collections: action.payload, isFetching: false };
+    case FETCH_COLLECTIONS_FAIL:
+      return { ...state, errorMessage: action.payload, isFetching: false };
     case UPDATE_COLLECTIONS:
       return { ...state, collections: action.payload };
     default:
