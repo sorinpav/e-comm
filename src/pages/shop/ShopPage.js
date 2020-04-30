@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { fetchCollectionsStart } from '../../redux/actions/shopActions';
+import { fetchCollectionsStartAsync } from '../../redux/actions/shopActions';
 
 import CollectionsOverviewContainer from '../../components/CollectionsOverview/CollectionsOverview.container';
 import CollectionPageContainer from '../../pages/collection/CollectionPage.container';
@@ -13,9 +13,9 @@ and Route passes match, location and history as props
 
 class ShopPage extends React.Component {
   componentDidMount() {
-    const { fetchCollectionsStart } = this.props;
+    const { fetchCollectionsStartAsync } = this.props;
 
-    fetchCollectionsStart();
+    fetchCollectionsStartAsync();
   }
 
   render() {
@@ -37,6 +37,6 @@ class ShopPage extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
+  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
 });
 export default connect(null, mapDispatchToProps)(ShopPage);

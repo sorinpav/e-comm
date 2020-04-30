@@ -1,10 +1,10 @@
 import firebase, { auth } from './firebase.utils';
 
-export const googleProvider = new firebase.auth.GoogleAuthProvider();
-googleProvider.setCustomParameters({ prompt: 'select_account' });
+export const signInWithGoogle = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
 
-export const signInWithGoogle = () =>
-  auth.signInWithPopup(googleProvider).catch((error) => {
+  auth.signInWithPopup(provider).catch((error) => {
     switch (error.code) {
       case 'auth/account-exists-with-different-credential':
         window.alert('');
@@ -34,7 +34,7 @@ export const signInWithGoogle = () =>
         console.log('This is the default case.');
     }
   });
-
+};
 export const signUpWithEmail = (email, password) => {
   auth
     .createUserWithEmailAndPassword(email, password)
