@@ -4,4 +4,4 @@ E-commerce website for fashion retailer, using React + Firebase + Stripe API
 http://concept-clothes.herokuapp.com
 
 
-![alt text](https://imgur.com/BROSI9V "Website Homepage")
+![alt text](https://i.imgur.com/BROSI9V.png "Website Homepage")
